@@ -23,11 +23,4 @@ function calculateEntry(entrants) {
   } catch (error) { return 0; }
 }
 
-const entrants = [
-  { name: 'zeca', age: 5 },
-  { name: 'pagodinho', age: 50 },
-];
-
-console.log(calculateEntry(entrants));
-
 module.exports = { calculateEntry, countEntrants };
