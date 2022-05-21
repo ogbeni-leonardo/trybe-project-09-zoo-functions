@@ -20,15 +20,15 @@ const getAnimalsByLocation = (location, options) => {
       }
       animals.push({ [specie.name]: getData });
     }
-  })
+  });
   return animals;
 };
 
 function getAnimalMap(options) {
-  let animalsMap = { NE: [], NW: [], SE: [], SW: [] };
+  const animalsMap = { NE: [], NW: [], SE: [], SW: [] };
   if (options === undefined || options === {} || !options.includeNames) {
     data.species.forEach((specie) => {
-        animalsMap[specie.location].push(specie.name);
+      animalsMap[specie.location].push(specie.name);
     });
     return animalsMap;
   }
