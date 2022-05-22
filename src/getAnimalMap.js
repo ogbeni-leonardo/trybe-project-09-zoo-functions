@@ -6,35 +6,22 @@ const getAnimalNames = (animalData, sort = false) => {
   return names;
 };
 
-const getAnimalsBySex = (specie, sex) => specie.residents.filter((animal) => animal.sex === sex);
-
-const getAnimalsByLocation = (location, options) => {
-  const animals = [];
-  data.species.forEach((specie) => {
-    if (specie.location === location && options.includeNames) {
-      let getData;
-      if (options.sex) {
-        getData = getAnimalNames(getAnimalsBySex(specie, options.sex), options.sorted);
-      } else {
-        getData = getAnimalNames(specie.residents, options.sorted);
-      }
-      animals.push({ [specie.name]: getData });
-    }
-  });
-  return animals;
-};
+const getAnimalsBySex = (specie, sex) => specie.residents.filter(
+  (animal) => animal.sex === sex,
+);
 
 function getAnimalMap(options) {
   const animalsMap = { NE: [], NW: [], SE: [], SW: [] };
-  if (options === undefined || options === {} || !options.includeNames) {
-    data.species.forEach((specie) => {
+  data.species.forEach((specie) => {
+    if (options === undefined || options === {} || !options.includeNames) {
       animalsMap[specie.location].push(specie.name);
-    });
-    return animalsMap;
-  }
-  Object.keys(animalsMap).forEach((location) => {
-    const result = getAnimalsByLocation(location, options);
-    animalsMap[location].push(...result);
+      return animalsMap;
+    }
+    let animalsName;
+    if (options.sex) {
+      animalsName = getAnimalNames(getAnimalsBySex(specie, options.sex), options.sorted);
+    } else animalsName = getAnimalNames(specie.residents, options.sorted);
+    animalsMap[specie.location].push({ [specie.name]: animalsName });
   });
   return animalsMap;
 }
