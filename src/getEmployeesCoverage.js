@@ -5,37 +5,25 @@ function formattedData(object) {
   const person = {
     id: object.id,
     fullName: `${object.firstName} ${object.lastName}`,
-    species: [],
-    locations: [],
+    species: object.responsibleFor.map(
+      (specieId) => data.species.find((specie) => specie.id === specieId).name,
+    ),
+    locations: object.responsibleFor.map(
+      (specieId) => data.species.find((specie) => specie.id === specieId).location,
+    ),
   };
-  const myAnimals = object.responsibleFor.map((specieId) => {
-    const specie = data.species.find((specieName) => specieName.id === specieId);
-    return specie;
-  });
-  person.species = myAnimals.map((specie) => specie.name);
-  myAnimals.forEach((specie) => {
-    person.locations.push(specie.location);
-  });
   return person;
 }
 
 function getEmployeesCoverage(search) {
-  if (search === undefined) {
-    const allEmployees = [];
-    data.employees.forEach((person) => {
-      allEmployees.push(formattedData(person));
-    });
-    return allEmployees;
+  if (search === undefined) return data.employees.map((person) => formattedData(person));
+  let employee;
+  if (search.id) employee = data.employees.find((employeeInfo) => employeeInfo.id === search.id);
+  if (search.name && employee === undefined) {
+    employee = data.employees.find((employeeInfo) => (
+      employeeInfo.firstName === search.name || employeeInfo.lastName === search.name));
   }
-  let person;
-  if (search.id) {
-    person = data.employees.find((personInfo) => personInfo.id === search.id);
-  }
-  if (search.name && person === undefined) {
-    person = data.employees.find((personInfo) => personInfo.firstName === search.name
-    || personInfo.lastName === search.name);
-  }
-  return formattedData(person);
+  return formattedData(employee);
 }
 
 module.exports = getEmployeesCoverage;
