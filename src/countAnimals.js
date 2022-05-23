@@ -1,19 +1,14 @@
-const data = require('../data/zoo_data');
+const { species } = require('../data/zoo_data');
 
 function countAnimals(animal) {
   if (animal === undefined) {
-    const animalsOfZoo = {};
-    data.species.forEach((animalType) => {
-      animalsOfZoo[animalType.name] = animalType.residents.length;
-    });
-    return animalsOfZoo;
+    return Object.fromEntries(
+      species.map((specie) => [specie.name, specie.residents.length]),
+    );
   }
-  const mySpecie = data.species.find((specie) => specie.name === animal.specie)
-    .residents;
-  if (animal.sex) {
-    return mySpecie.filter((specie) => specie.sex === animal.sex).length;
-  }
-  return mySpecie.length;
+  const selectedSpecie = species.find((specie) => specie.name === animal.specie).residents;
+  if (animal.sex) return selectedSpecie.filter((specie) => specie.sex === animal.sex).length;
+  return selectedSpecie.length;
 }
 
 module.exports = countAnimals;
